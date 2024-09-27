@@ -1,0 +1,77 @@
+/* CosplanPage.css */
+
+.cosplan-page-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.cosplan-page {
+  flex: 1;
+  padding-right: 200px; /* Leave space for the character list */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2d2d2d;
+  color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.character-header {
+  margin-bottom: 20px;
+}
+
+.character-image img {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.tab-button {
+  background-color: #4c4c9d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.tab-button.active {
+  background-color: #37377a;
+}
+
+.tab-button:hover {
+  background-color: #5a5ab5;
+}
+
+.tab-content {
+  background-color: #1e1e2f;
+  padding: 20px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  margin-top: 40px;
+}
+
+.progress-bar span {
+  color: #aaaaaa;
+  font-style: italic;
+}
