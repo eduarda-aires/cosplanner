@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './CosplanPage.css';
 import CharacterList from './CharacterList';
+import CharacterStylingTab from './CharacterStylingTab';
+import PropMakingTab from './PropMakingTab';
+import ShoppingListTab from './ShoppingListTab';
+import PhotoshootMoodboardTab from './PhotoshootMoodboardTab';
 
 const CosplanPage = () => {
   // Sample characters list
@@ -10,20 +14,83 @@ const CosplanPage = () => {
     { name: 'Character 3', game: 'Game C', image: '/images/character3.png' }
   ];
 
-  // State to hold the currently selected character
+  // State for currently selected character and active tab
   const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
-
-  // State to control which tab is active
   const [activeTab, setActiveTab] = useState('Character & Styling');
 
-  // Tabs array
-  const tabs = ['Character & Styling', 'Prop Making', 'Shopping List', 'Photoshoot Moodboard'];
+  // Initialize state for each character's individual tab data
+  const [characterData, setCharacterData] = useState(
+    characters.reduce((acc, char) => {
+      acc[char.name] = {
+        characterStyling: { text: '', images: [] },
+        propMaking: { text: '', images: [] },
+        shoppingList: [{ item: '', done: false }],
+        moodboard: { text: '', images: [] }
+      };
+      return acc;
+    }, {})
+  );
 
   // Handle character selection
   const handleCharacterSelect = (character) => {
     setSelectedCharacter(character);
-    // Optionally reset to the default tab when switching characters
     setActiveTab('Character & Styling');
+  };
+
+  // Update character data in state for each tab
+  const handleTextChange = (e, tab) => {
+    const updatedData = { ...characterData[selectedCharacter.name] };
+    if (tab === 'Character & Styling') updatedData.characterStyling.text = e.target.value;
+    if (tab === 'Prop Making') updatedData.propMaking.text = e.target.value;
+    if (tab === 'Photoshoot Moodboard') updatedData.moodboard.text = e.target.value;
+
+    setCharacterData({
+      ...characterData,
+      [selectedCharacter.name]: updatedData
+    });
+  };
+
+  const handleImageChange = (e, tab) => {
+    const files = Array.from(e.target.files);
+    const updatedData = { ...characterData[selectedCharacter.name] };
+    if (tab === 'Character & Styling') updatedData.characterStyling.images = files;
+    if (tab === 'Prop Making') updatedData.propMaking.images = files;
+    if (tab === 'Photoshoot Moodboard') updatedData.moodboard.images = files;
+
+    setCharacterData({
+      ...characterData,
+      [selectedCharacter.name]: updatedData
+    });
+  };
+
+  const handleAddShoppingItem = () => {
+    const updatedData = { ...characterData[selectedCharacter.name] };
+    updatedData.shoppingList.push({ item: '', done: false });
+
+    setCharacterData({
+      ...characterData,
+      [selectedCharacter.name]: updatedData
+    });
+  };
+
+  const handleShoppingItemChange = (index, value) => {
+    const updatedData = { ...characterData[selectedCharacter.name] };
+    updatedData.shoppingList[index].item = value;
+
+    setCharacterData({
+      ...characterData,
+      [selectedCharacter.name]: updatedData
+    });
+  };
+
+  const handleShoppingItemToggle = (index) => {
+    const updatedData = { ...characterData[selectedCharacter.name] };
+    updatedData.shoppingList[index].done = !updatedData.shoppingList[index].done;
+
+    setCharacterData({
+      ...characterData,
+      [selectedCharacter.name]: updatedData
+    });
   };
 
   return (
@@ -41,9 +108,9 @@ const CosplanPage = () => {
           <img src={selectedCharacter.image} alt={selectedCharacter.name} />
         </div>
 
-        {/* Tabs for Sections */}
+        {/* Tabs */}
         <div className="tabs">
-          {tabs.map((tab, index) => (
+          {['Character & Styling', 'Prop Making', 'Shopping List', 'Photoshoot Moodboard'].map((tab, index) => (
             <button
               key={index}
               className={`tab-button ${activeTab === tab ? 'active' : ''}`}
@@ -56,10 +123,38 @@ const CosplanPage = () => {
 
         {/* Tab Content */}
         <div className="tab-content">
-          {activeTab === 'Character & Styling' && <div>Character & Styling Content</div>}
-          {activeTab === 'Prop Making' && <div>Prop Making Content</div>}
-          {activeTab === 'Shopping List' && <div>Shopping List Content</div>}
-          {activeTab === 'Photoshoot Moodboard' && <div>Photoshoot Moodboard Content</div>}
+          {activeTab === 'Character & Styling' && (
+            <CharacterStylingTab
+              characterStyling={characterData[selectedCharacter.name].characterStyling}
+              handleTextChange={(e) => handleTextChange(e, 'Character & Styling')}
+              handleImageChange={(e) => handleImageChange(e, 'Character & Styling')}
+            />
+          )}
+
+          {activeTab === 'Prop Making' && (
+            <PropMakingTab
+              propMaking={characterData[selectedCharacter.name].propMaking}
+              handleTextChange={(e) => handleTextChange(e, 'Prop Making')}
+              handleImageChange={(e) => handleImageChange(e, 'Prop Making')}
+            />
+          )}
+
+          {activeTab === 'Shopping List' && (
+            <ShoppingListTab
+              shoppingList={characterData[selectedCharacter.name].shoppingList}
+              handleShoppingItemChange={handleShoppingItemChange}
+              handleShoppingItemToggle={handleShoppingItemToggle}
+              handleAddShoppingItem={handleAddShoppingItem}
+            />
+          )}
+
+          {activeTab === 'Photoshoot Moodboard' && (
+            <PhotoshootMoodboardTab
+              moodboard={characterData[selectedCharacter.name].moodboard}
+              handleTextChange={(e) => handleTextChange(e, 'Photoshoot Moodboard')}
+              handleImageChange={(e) => handleImageChange(e, 'Photoshoot Moodboard')}
+            />
+          )}
         </div>
 
         {/* (Future Work) Progress Bar */}
@@ -69,10 +164,7 @@ const CosplanPage = () => {
       </div>
 
       {/* Character List on the Right */}
-      <CharacterList
-        characters={characters}
-        onSelectCharacter={handleCharacterSelect}
-      />
+      <CharacterList characters={characters} onSelectCharacter={handleCharacterSelect} />
     </div>
   );
 };
