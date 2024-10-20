@@ -137,3 +137,21 @@
 .add-character-modal button:hover {
   background-color: #677bc4;
 }
+
+.character-image input[type="file"] {
+  display: none; /* Hide the default file input */
+}
+
+.character-image label {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #7289da; /* Use a nice color */
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.character-image label:hover {
+  background-color: #677bc4; /* Darker shade on hover */
+}

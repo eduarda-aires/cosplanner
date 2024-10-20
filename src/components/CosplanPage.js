@@ -150,8 +150,10 @@ const CosplanPage = () => {
             type="file" 
             accept="image/*" 
             onChange={handleImageUpload} 
-            style={{ marginTop: '10px' }} 
+            id="imageUpload" // Add an ID for the label to reference
           />
+          <label htmlFor="imageUpload">Upload Image</label> {/* Custom label for the button */}
+
         </div>
   
         <div className="tabs">
