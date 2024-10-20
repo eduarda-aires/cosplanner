@@ -1,7 +1,7 @@
 import React from 'react';
 import './CharacterList.css';
 
-const CharacterList = ({ characters, onSelectCharacter }) => {
+const CharacterList = ({ characters, onSelectCharacter, onAddCharacter }) => {
   return (
     <div className="character-list">
       <h3>Your Characters</h3>
@@ -12,8 +12,10 @@ const CharacterList = ({ characters, onSelectCharacter }) => {
           </li>
         ))}
       </ul>
+      <button onClick={onAddCharacter}>Add Character</button>
     </div>
   );
 };
 
 export default CharacterList;
+

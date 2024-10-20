@@ -7,18 +7,19 @@ import ShoppingListTab from './ShoppingListTab';
 import PhotoshootMoodboardTab from './PhotoshootMoodboardTab';
 
 const CosplanPage = () => {
-  // Sample characters list
-  const characters = [
+  // Initialize state for characters
+  const [characters, setCharacters] = useState([
     { name: 'Character 1', game: 'Game A', image: '/images/character1.png' },
     { name: 'Character 2', game: 'Game B', image: '/images/character2.png' },
     { name: 'Character 3', game: 'Game C', image: '/images/character3.png' }
-  ];
+  ]);
 
-  // State for currently selected character and active tab
   const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
   const [activeTab, setActiveTab] = useState('Character & Styling');
+  
+  const [newCharacter, setNewCharacter] = useState({ name: '', game: '', image: '' });
+  const [isAddingCharacter, setIsAddingCharacter] = useState(false);
 
-  // Initialize state for each character's individual tab data
   const [characterData, setCharacterData] = useState(
     characters.reduce((acc, char) => {
       acc[char.name] = {
@@ -31,13 +32,11 @@ const CosplanPage = () => {
     }, {})
   );
 
-  // Handle character selection
   const handleCharacterSelect = (character) => {
     setSelectedCharacter(character);
     setActiveTab('Character & Styling');
   };
 
-  // Update character data in state for each tab
   const handleTextChange = (e, tab) => {
     const updatedData = { ...characterData[selectedCharacter.name] };
     if (tab === 'Character & Styling') updatedData.characterStyling.text = e.target.value;
@@ -93,22 +92,37 @@ const CosplanPage = () => {
     });
   };
 
+  // Add a new character
+  const handleAddCharacter = () => {
+    const newChar = { ...newCharacter, image: '/images/default-character.png' }; // default image
+    setCharacters([...characters, newChar]);
+
+    // Initialize new character data for tabs
+    setCharacterData({
+      ...characterData,
+      [newChar.name]: {
+        characterStyling: { text: '', images: [] },
+        propMaking: { text: '', images: [] },
+        shoppingList: [{ item: '', done: false }],
+        moodboard: { text: '', images: [] }
+      }
+    });
+    
+    setNewCharacter({ name: '', game: '', image: '' }); // Reset form
+    setIsAddingCharacter(false); // Close form
+  };
+
   return (
     <div className="cosplan-page-container">
       {/* Main Cosplan Page */}
       <div className="cosplan-page">
-        {/* Character Header */}
         <div className="character-header">
           <h1>{selectedCharacter.name}</h1>
           <h3>{selectedCharacter.game}</h3>
         </div>
-
-        {/* Character Image */}
         <div className="character-image">
           <img src={selectedCharacter.image} alt={selectedCharacter.name} />
         </div>
-
-        {/* Tabs */}
         <div className="tabs">
           {['Character & Styling', 'Prop Making', 'Shopping List', 'Photoshoot Moodboard'].map((tab, index) => (
             <button
@@ -120,8 +134,6 @@ const CosplanPage = () => {
             </button>
           ))}
         </div>
-
-        {/* Tab Content */}
         <div className="tab-content">
           {activeTab === 'Character & Styling' && (
             <CharacterStylingTab
@@ -156,15 +168,38 @@ const CosplanPage = () => {
             />
           )}
         </div>
-
-        {/* (Future Work) Progress Bar */}
         <div className="progress-bar">
           <span>Progress (future work)</span>
         </div>
       </div>
 
-      {/* Character List on the Right */}
-      <CharacterList characters={characters} onSelectCharacter={handleCharacterSelect} />
+      {/* Character List and Add Character */}
+      <CharacterList 
+        characters={characters} 
+        onSelectCharacter={handleCharacterSelect} 
+        onAddCharacter={() => setIsAddingCharacter(true)} 
+      />
+      
+      {/* Add Character Form */}
+      {isAddingCharacter && (
+        <div className="add-character-modal">
+          <h3>Add a new Character</h3>
+          <input 
+            type="text" 
+            placeholder="Character Name" 
+            value={newCharacter.name} 
+            onChange={(e) => setNewCharacter({ ...newCharacter, name: e.target.value })} 
+          />
+          <input 
+            type="text" 
+            placeholder="Game/Franchise" 
+            value={newCharacter.game} 
+            onChange={(e) => setNewCharacter({ ...newCharacter, game: e.target.value })} 
+          />
+          <button onClick={handleAddCharacter}>Add Character</button>
+          <button onClick={() => setIsAddingCharacter(false)}>Cancel</button>
+        </div>
+      )}
     </div>
   );
 };
