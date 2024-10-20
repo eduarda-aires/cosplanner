@@ -143,7 +143,7 @@ const CosplanPage = () => {
             <img 
               src={characterData[selectedCharacter.name].image} 
               alt={selectedCharacter.name} 
-              style={{ width: '200px', height: 'auto' }} 
+              style={{ width: '200px', height: 'auto', display: 'block', marginBottom: '10px' }} 
             />
           )}
           <input 
@@ -151,10 +151,16 @@ const CosplanPage = () => {
             accept="image/*" 
             onChange={handleImageUpload} 
             id="imageUpload" // Add an ID for the label to reference
+            style={{ display: 'none' }} // Hide the default input
           />
-          <label htmlFor="imageUpload">Upload Image</label> {/* Custom label for the button */}
-
+          <label 
+            htmlFor="imageUpload" 
+            className="upload-button"
+          >
+            Upload Image
+          </label>
         </div>
+
   
         <div className="tabs">
           {['Character & Styling', 'Prop Making', 'Shopping List', 'Photoshoot Moodboard'].map((tab, index) => (

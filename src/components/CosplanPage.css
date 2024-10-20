@@ -33,6 +33,22 @@
   padding: 10px;
 }
 
+.upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Change color as desired */
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none; /* Ensure no underline */
+}
+
+.upload-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+
 .tabs {
   display: flex;
   justify-content: center;
