@@ -9,9 +9,9 @@ import PhotoshootMoodboardTab from './PhotoshootMoodboardTab';
 const CosplanPage = () => {
   // Initialize state for characters
   const [characters, setCharacters] = useState([
-    { name: 'Character 1', game: 'Game A', image: '/images/character1.png' },
-    { name: 'Character 2', game: 'Game B', image: '/images/character2.png' },
-    { name: 'Character 3', game: 'Game C', image: '/images/character3.png' }
+      { name: 'Character 1', game: 'Game A', image: '' },
+      { name: 'Character 2', game: 'Game B', image: '' },
+      { name: 'Character 3', game: 'Game C', image: '' }
   ]);
 
   const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
@@ -26,7 +26,8 @@ const CosplanPage = () => {
         characterStyling: { text: '', images: [] },
         propMaking: { text: '', images: [] },
         shoppingList: [{ item: '', done: false }],
-        moodboard: { text: '', images: [] }
+        moodboard: { text: '', images: [] },
+        image: { image: '' }
       };
       return acc;
     }, {})
@@ -48,6 +49,21 @@ const CosplanPage = () => {
       [selectedCharacter.name]: updatedData
     });
   };
+
+  // Handle image upload for the selected character
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const updatedData = { ...characterData[selectedCharacter.name] };
+      updatedData.image = URL.createObjectURL(file); // Create a URL for the image file
+
+      setCharacterData({
+        ...characterData,
+        [selectedCharacter.name]: updatedData
+      });
+    }
+  };
+
 
   const handleImageChange = (e, tab) => {
     const files = Array.from(e.target.files);
@@ -120,9 +136,24 @@ const CosplanPage = () => {
           <h1>{selectedCharacter.name}</h1>
           <h3>{selectedCharacter.game}</h3>
         </div>
+        
+        {/* Character Image Upload */}
         <div className="character-image">
-          <img src={selectedCharacter.image} alt={selectedCharacter.name} />
+          {characterData[selectedCharacter.name].image && (
+            <img 
+              src={characterData[selectedCharacter.name].image} 
+              alt={selectedCharacter.name} 
+              style={{ width: '200px', height: 'auto' }} 
+            />
+          )}
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={handleImageUpload} 
+            style={{ marginTop: '10px' }} 
+          />
         </div>
+  
         <div className="tabs">
           {['Character & Styling', 'Prop Making', 'Shopping List', 'Photoshoot Moodboard'].map((tab, index) => (
             <button
@@ -134,6 +165,7 @@ const CosplanPage = () => {
             </button>
           ))}
         </div>
+  
         <div className="tab-content">
           {activeTab === 'Character & Styling' && (
             <CharacterStylingTab
@@ -142,7 +174,7 @@ const CosplanPage = () => {
               handleImageChange={(e) => handleImageChange(e, 'Character & Styling')}
             />
           )}
-
+  
           {activeTab === 'Prop Making' && (
             <PropMakingTab
               propMaking={characterData[selectedCharacter.name].propMaking}
@@ -150,7 +182,7 @@ const CosplanPage = () => {
               handleImageChange={(e) => handleImageChange(e, 'Prop Making')}
             />
           )}
-
+  
           {activeTab === 'Shopping List' && (
             <ShoppingListTab
               shoppingList={characterData[selectedCharacter.name].shoppingList}
@@ -159,7 +191,7 @@ const CosplanPage = () => {
               handleAddShoppingItem={handleAddShoppingItem}
             />
           )}
-
+  
           {activeTab === 'Photoshoot Moodboard' && (
             <PhotoshootMoodboardTab
               moodboard={characterData[selectedCharacter.name].moodboard}
@@ -168,18 +200,19 @@ const CosplanPage = () => {
             />
           )}
         </div>
+  
         <div className="progress-bar">
           <span>Progress (future work)</span>
         </div>
       </div>
-
+  
       {/* Character List and Add Character */}
       <CharacterList 
         characters={characters} 
         onSelectCharacter={handleCharacterSelect} 
         onAddCharacter={() => setIsAddingCharacter(true)} 
       />
-      
+  
       {/* Add Character Form */}
       {isAddingCharacter && (
         <div className="add-character-modal">
@@ -202,6 +235,5 @@ const CosplanPage = () => {
       )}
     </div>
   );
-};
-
+}
 export default CosplanPage;
