@@ -68,15 +68,32 @@ const CosplanPage = () => {
   const handleImageChange = (e, tab) => {
     const files = Array.from(e.target.files);
     const updatedData = { ...characterData[selectedCharacter.name] };
-    if (tab === 'Character & Styling') updatedData.characterStyling.images = files;
-    if (tab === 'Prop Making') updatedData.propMaking.images = files;
-    if (tab === 'Photoshoot Moodboard') updatedData.moodboard.images = files;
-
+    
+    if (tab === 'Character & Styling') {
+      updatedData.characterStyling.images = [
+        ...updatedData.characterStyling.images, // Keep existing images
+        ...files.map(file => URL.createObjectURL(file)) // Create URLs for new images
+      ];
+    }
+    if (tab === 'Prop Making') {
+      updatedData.propMaking.images = [
+        ...updatedData.propMaking.images,
+        ...files.map(file => URL.createObjectURL(file))
+      ];
+    }
+    if (tab === 'Photoshoot Moodboard') {
+      updatedData.moodboard.images = [
+        ...updatedData.moodboard.images,
+        ...files.map(file => URL.createObjectURL(file))
+      ];
+    }
+  
     setCharacterData({
       ...characterData,
       [selectedCharacter.name]: updatedData
     });
   };
+  
 
   const handleAddShoppingItem = () => {
     const updatedData = { ...characterData[selectedCharacter.name] };
