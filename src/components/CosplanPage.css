@@ -9,17 +9,20 @@
 
 .cosplan-page {
   flex: 1;
-  padding-right: 200px; /* Leave space for the character list */
+  padding-right: 200px; /* Space for the character list */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   background-color: #2d2d2d;
   color: #f5f5f5;
   min-height: 100vh;
   padding: 20px;
   text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: auto; /* Allows scrolling if content exceeds viewport */
 }
+
 
 .character-header {
   margin-bottom: 20px;
