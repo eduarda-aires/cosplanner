@@ -32,24 +32,35 @@ const CharacterStylingTab = ({ characterStyling, handleTextChange, handleImageCh
           padding: '10px' // Padding for better text placement
         }}
       />
-      
-      <input
-        type="file"
-        multiple // Allow multiple file selection
-        accept="image/*"
-        onChange={handleImageChange}
-      />
 
-      <div className="image-gallery">
-        {characterStyling.images.map((imgSrc, index) => (
-          <img
-            key={index}
-            src={imgSrc}
-            alt={`Reference ${index + 1}`}
-            style={{ width: '100px', height: 'auto', margin: '5px', cursor: 'pointer' }}
-            onClick={() => openModal(imgSrc)} // Open modal to show image
-          />
-        ))}
+      {/* Image Upload Section */}
+      <div className="image-upload-section">
+        <p className="image-upload-label"><h4>References</h4></p>
+
+        {/* Image gallery */}
+        <div className="image-gallery">
+          {characterStyling.images.map((imgSrc, index) => (
+            <img
+              key={index}
+              src={imgSrc}
+              alt={`Character Styling ${index + 1}`}
+              onClick={() => openModal(imgSrc)}
+            />
+          ))}
+        </div>
+
+        {/* Upload button below the images */}
+        <label htmlFor="file-upload" className="custom-file-upload">
+          Upload Images
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: 'none' }} // Keep this to hide the input
+        />
       </div>
 
       {/* Modal for displaying images */}
