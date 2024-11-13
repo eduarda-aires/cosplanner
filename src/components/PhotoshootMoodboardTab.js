@@ -32,26 +32,42 @@ const PhotoshootMoodboardTab = ({ moodboard, handleTextChange, handleImageChange
     <div className="moodboard-container">
       <h3>Photoshoot Moodboard</h3>
       
-      {/* Keywords Section */}
-      <div className="keyword-section">
+    {/* Keywords Section */}
+    <div className="keyword-section">
+      <h4>Keywords</h4>
+      <div className="keyword-input-container">
         <input
           type="text"
           value={keywordInput}
           onChange={(e) => setKeywordInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // Prevent form submission or other default actions
+              addKeyword();
+            }
+          }}
           placeholder="Add a keyword"
           className="keyword-input"
         />
-        <button onClick={addKeyword} className="add-keyword-button">Add</button>
-        
-        <div className="keyword-list">
-          {keywords.map((keyword, index) => (
-            <span key={index} className="keyword-tag">
-              {keyword}
-              <button onClick={() => removeKeyword(index)} className="remove-keyword-button">&times;</button>
-            </span>
-          ))}
-        </div>
+        <button 
+          onClick={addKeyword} 
+          className="add-keyword-button"
+        >
+          Add
+        </button>
       </div>
+
+      <div className="keyword-list">
+        {keywords.map((keyword, index) => (
+          <span key={index} className="keyword-tag">
+            {keyword}
+            <button onClick={() => removeKeyword(index)} className="remove-keyword-button">&times;</button>
+          </span>
+        ))}
+      </div>
+    </div>
+
+
 
       {/* Text Notes Section */}
       <textarea

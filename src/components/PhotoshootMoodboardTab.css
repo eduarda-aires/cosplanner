@@ -3,32 +3,47 @@
     flex-direction: column;
   }
   
-  /* Keywords Section */
-  .keyword-section {
+/* Container for the keyword input and add button */
+.keyword-section {
+  display: flex;
+  flex-direction: column; /* Main container remains column */
+  margin-bottom: 15px;
+}
+
+.keyword-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px; /* Optional: space between the header and input */
+}
+
+.keyword-input {
+  flex-grow: 1;
+  padding: 8px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+}
+
+.add-keyword-button {
+  padding: 6px 10px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto; /* Ensures button fits content */
+  min-width: 50px;
+  margin-left: 5px; /* Space between input and button */
+}
+
+  
+  .keyword-list-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
   }
-  
-  .keyword-input {
-    width: calc(100% - 60px);
-    padding: 8px;
-    margin-right: 5px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    border-radius: 5px;
-  }
-  
-  .add-keyword-button {
-    padding: 8px 12px;
-    background-color: #444;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+
   .keyword-list {
     margin-top: 10px;
     display: flex;
